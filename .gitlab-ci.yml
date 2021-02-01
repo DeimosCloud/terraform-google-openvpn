@@ -14,6 +14,9 @@ stages:
   - init
   - validate
 
+default:
+  tags:
+    - docker
 
 cache: &cache
   key: "${CI_COMMIT_REF_SLUG}-$CI_PROJECT_DIR-$DEPLOY_DIR"
