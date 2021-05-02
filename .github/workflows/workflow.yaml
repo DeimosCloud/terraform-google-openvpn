@@ -1,6 +1,9 @@
 name: Terraform Modules CI
 
 on:
+  push:
+    branches:
+      - ci-setup
   pull_request:
     branches:
       - master
