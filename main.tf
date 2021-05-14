@@ -60,6 +60,7 @@ module "instance_template" {
   metadata             = local.metadata
   service_account      = var.service_account
   source_image_family  = var.image_family
+  source_image         = var.source_image
   source_image_project = var.source_image_project
   disk_size_gb         = var.disk_size_gb
 
