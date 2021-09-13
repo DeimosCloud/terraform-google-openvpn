@@ -12,7 +12,7 @@ locals {
 }
 
 resource "google_compute_firewall" "allow-external-ssh" {
-  name    = "allow-external-ssh"
+  name    = "allow-external-ssh-${var.environment}"
   network = var.network
 
   allow {
@@ -25,7 +25,7 @@ resource "google_compute_firewall" "allow-external-ssh" {
 }
 
 resource "google_compute_address" "default" {
-  name         = "global-openvpn-ip"
+  name         = "global-openvpn-ip-${var.environment}"
   region       = var.region
   network_tier = var.network_tier
 }
