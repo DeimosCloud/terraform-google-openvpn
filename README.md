@@ -11,7 +11,6 @@ module "openvpn" {
   project_id = var.project_id
   network    = module.vpc.network
   subnetwork = module.vpc.public_subnetwork
-  hostname   = "openvpn"
   output_dir = "${path.module}/openvpn"
   users      = ["bob", "alice"]
 }
