@@ -67,6 +67,7 @@ do
     # Export the corresponding options and revoke the user certificate
     export MENU_OPTION="2"
     export CLIENT="${ovpn_user}"
+    export DNS="9"
     searchRegex="${ovpn_user}$"
     export CLIENTNUMBER=$(echo $(tail -n +2 /etc/openvpn/easy-rsa/pki/index.txt | grep "^V" | cut -d '=' -f 2 | nl -s ') '|grep -n $searchRegex)|head -c 1)
     ./openvpn-install.sh
@@ -89,5 +90,6 @@ do
   export MENU_OPTION="1"
   export CLIENT="${username}"
   export PASS="1"
+  export DNS="9"
   ./openvpn-install.sh
 done

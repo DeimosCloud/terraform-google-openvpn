@@ -9,10 +9,14 @@ locals {
   tags             = toset(concat(var.tags, local.ssh_tag))
   output_folder    = var.output_dir
   private_key_file = "private-key.pem"
+  # adding the null_resource to prevent evaluating this until the openvpn_update_users has executed
+  refetch_user_ovpn = null_resource.openvpn_update_users_script.id != "" ? !alltrue([for x in var.users : fileexists("${var.output_dir}/${x}.ovpn")]) : false
+  prefix            = var.prefix == "" ? "" : "${var.prefix}-"
+
 }
 
 resource "google_compute_firewall" "allow-external-ssh" {
-  name    = "allow-external-ssh"
+  name    = "${local.prefix}openvpn-allow-external-ssh"
   network = var.network
 
   allow {
@@ -52,16 +56,17 @@ resource "random_id" "password" {
 
 module "instance_template" {
   source               = "terraform-google-modules/vm/google//modules/instance_template"
-  version              = "~>6.0.0"
+  version              = "~>7.0.0"
   region               = var.region
+  name_prefix          = "${local.prefix}openvpn"
   project_id           = var.project_id
   network              = var.network
   subnetwork           = var.subnetwork
   metadata             = local.metadata
   service_account      = var.service_account
-  source_image_family  = var.image_family
   source_image         = var.source_image
   source_image_project = var.source_image_project
+  source_image_family  = var.source_image_family
   disk_size_gb         = var.disk_size_gb
 
   startup_script = <<SCRIPT
@@ -70,6 +75,8 @@ module "instance_template" {
     mv openvpn-install.sh /home/${var.remote_user}/
     export AUTO_INSTALL=y
     export PASS=1
+    # Select Google DNS
+    export DNS=9
     /home/${var.remote_user}/openvpn-install.sh
   SCRIPT
 
@@ -78,25 +85,30 @@ module "instance_template" {
 }
 
 
-module "openvpn_vm" {
-  source            = "terraform-google-modules/vm/google//modules/compute_instance"
-  version           = "~>6.0.0"
-  region            = var.region
-  network           = var.network
-  subnetwork        = var.subnetwork
-  hostname          = var.hostname
-  instance_template = module.instance_template.self_link
 
-  access_config = [{
-    nat_ip       = google_compute_address.default.address
-    network_tier = var.network_tier
-  }]
+resource "google_compute_instance_from_template" "this" {
+  name    = "${local.prefix}openvpn"
+  project = var.project_id
+  zone    = var.zone
+
+  network_interface {
+    network    = var.network
+    subnetwork = var.subnetwork
+    access_config {
+      nat_ip       = google_compute_address.default.address
+      network_tier = var.network_tier
+    }
+  }
+
+  source_instance_template = module.instance_template.self_link
 }
 
 
+# Updates/creates the users VPN credentials on the VPN server
 resource "null_resource" "openvpn_update_users_script" {
   triggers = {
-    users = join(", ", var.users)
+    users    = join(",", var.users)
+    instance = google_compute_instance_from_template.this.instance_id
   }
 
   connection {
@@ -122,26 +134,34 @@ resource "null_resource" "openvpn_update_users_script" {
     when = create
   }
 
-  depends_on = [module.openvpn_vm, local_file.private_key]
+  # Delete OVPN files if new instance is created
+  provisioner "local-exec" {
+    command = "rm -rf ${abspath(var.output_dir)}/*.ovpn"
+    when    = create
+  }
+
+  depends_on = [google_compute_instance_from_template.this, local_file.private_key]
 }
+
 
 # Download user configurations to output_dir
 resource "null_resource" "openvpn_download_configurations" {
-  depends_on = [null_resource.openvpn_update_users_script]
-
   triggers = {
-    users = join(", ", var.users)
+    trigger = timestamp()
   }
+
+  depends_on = [null_resource.openvpn_update_users_script]
 
   # Copy .ovpn config for user from server to var.output_dir
   provisioner "local-exec" {
     working_dir = var.output_dir
-    command     = <<SCRIPT
-      scp -i ${local.private_key_file} \
-          -o StrictHostKeyChecking=no \
-          -o UserKnownHostsFile=/dev/null \
-          ${var.remote_user}@${google_compute_address.default.address}:/home/${var.remote_user}/*.ovpn .
-    SCRIPT
-    when        = create
+    command     = "${abspath(path.module)}/scripts/refetch_user.sh"
+    environment = {
+      REFETCH_USER_OVPN = local.refetch_user_ovpn
+      PRIVATE_KEY_FILE  = local.private_key_file
+      REMOTE_USER       = var.remote_user
+      IP_ADDRESS        = google_compute_address.default.address
+    }
+    when = create
   }
 }

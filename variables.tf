@@ -1,3 +1,7 @@
+variable "prefix" {
+  description = "prefix to use for all resource"
+  default     = ""
+}
 variable "project_id" {
   description = "The GCP Project ID"
   default     = null
@@ -8,9 +12,13 @@ variable "region" {
   default     = null
 }
 
+variable "zone" {
+  description = "The GCP Zone to deploy VPN Compute instance to"
+}
+
 variable "network" {
   description = "The name or self_link of the network to attach this interface to. Use network attribute for Legacy or Auto subnetted networks and subnetwork for custom subnetted networks."
-  default     = null
+  default     = "default"
 }
 
 variable "subnetwork" {
@@ -18,19 +26,14 @@ variable "subnetwork" {
   default     = null
 }
 
-variable "hostname" {
-  description = "Hostname of instances"
-  default     = "openvpn"
-}
-
-variable "image_family" {
-  type    = string
-  default = "ubuntu-2004-lts"
-}
-
 variable "source_image_project" {
   type    = string
   default = "ubuntu-os-cloud"
+}
+
+variable "source_image_family" {
+  type    = string
+  default = "ubuntu-2004-lts"
 }
 
 variable "source_image" {

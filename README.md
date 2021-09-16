@@ -41,7 +41,9 @@ Full contributing guidelines are covered [here](CONTRIBUTING.md).
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Requirements
 
-No requirements.
+| Name | Version |
+|------|---------|
+| terraform | >= 0.14 |
 
 ## Providers
 
@@ -58,22 +60,23 @@ No requirements.
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | disk\_size\_gb | n/a | `string` | `"30"` | no |
-| hostname | Hostname of instances | `string` | `"openvpn"` | no |
-| image\_family | n/a | `string` | `"ubuntu-2004-lts"` | no |
 | labels | Labels, provided as a map | `map` | `{}` | no |
 | metadata | Metadata, provided as a map | `map` | `{}` | no |
-| network | The name or self\_link of the network to attach this interface to. Use network attribute for Legacy or Auto subnetted networks and subnetwork for custom subnetted networks. | `any` | `null` | no |
+| network | The name or self\_link of the network to attach this interface to. Use network attribute for Legacy or Auto subnetted networks and subnetwork for custom subnetted networks. | `string` | `"default"` | no |
 | network\_tier | Network network\_tier | `string` | `"STANDARD"` | no |
 | output\_dir | Folder to store all user openvpn details | `string` | `"openvpn"` | no |
+| prefix | prefix to use for all resource | `string` | `""` | no |
 | project\_id | The GCP Project ID | `any` | `null` | no |
 | region | The GCP Project Region | `any` | `null` | no |
 | remote\_user | The user to operate as on the VM. SSH Key is generated for this user | `string` | `"ubuntu"` | no |
 | service\_account | Service account to attach to the instance. See https://www.terraform.io/docs/providers/google/r/compute_instance_template.html#service_account. | <pre>object({<br>    email  = string,<br>    scopes = set(string)<br>  })</pre> | <pre>{<br>  "email": null,<br>  "scopes": []<br>}</pre> | no |
 | source\_image | The source image for the image family. If not specified, terraform will try to create a new instance template anytime an update for an image familty is release | `string` | `"ubuntu-2004-focal-v20210415"` | no |
+| source\_image\_family | n/a | `string` | `"ubuntu-2004-lts"` | no |
 | source\_image\_project | n/a | `string` | `"ubuntu-os-cloud"` | no |
 | subnetwork | The name of the subnetwork to attach this interface to. The subnetwork must exist in the same region this instance will be created in. Either network or subnetwork must be provided. | `any` | `null` | no |
 | tags | network tags to attach to the instance | `list` | `[]` | no |
 | users | list of user to create | `list(string)` | `[]` | no |
+| zone | The GCP Zone to deploy VPN Compute instance to | `any` | n/a | yes |
 
 ## Outputs
 
