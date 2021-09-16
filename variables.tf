@@ -95,3 +95,8 @@ variable "remote_user" {
   description = "The user to operate as on the VM. SSH Key is generated for this user"
   default     = "ubuntu"
 }
+
+variable "machine_type" {
+  description = "Machine type to create, e.g. n1-standard-1"
+  default     = "n1-standard-1"
+}

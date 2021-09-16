@@ -60,6 +60,7 @@ Full contributing guidelines are covered [here](CONTRIBUTING.md).
 |------|-------------|------|---------|:--------:|
 | disk\_size\_gb | n/a | `string` | `"30"` | no |
 | labels | Labels, provided as a map | `map` | `{}` | no |
+| machine\_type | Machine type to create, e.g. n1-standard-1 | `string` | `"n1-standard-1"` | no |
 | metadata | Metadata, provided as a map | `map` | `{}` | no |
 | network | The name or self\_link of the network to attach this interface to. Use network attribute for Legacy or Auto subnetted networks and subnetwork for custom subnetted networks. | `string` | `"default"` | no |
 | network\_tier | Network network\_tier | `string` | `"STANDARD"` | no |

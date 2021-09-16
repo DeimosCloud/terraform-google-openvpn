@@ -63,6 +63,7 @@ module "instance_template" {
   network              = var.network
   subnetwork           = var.subnetwork
   metadata             = local.metadata
+  machine_type         = var.machine_type
   service_account      = var.service_account
   source_image         = var.source_image
   source_image_project = var.source_image_project
