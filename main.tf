@@ -130,7 +130,7 @@ resource "null_resource" "openvpn_update_users_script" {
     inline = [
       "while [ ! -f /etc/openvpn/server.conf ]; do sleep 10; done",
       "chmod +x ~${var.remote_user}/update_users.sh",
-      "sudo ~${var.remote_user}/update_users.sh ${join(" ", var.users)}",
+      "sudo ROUTE_ONLY_PRIVATE_IPS='${var.route_only_private_ips}' ~${var.remote_user}/update_users.sh ${join(" ", var.users)}",
     ]
     when = create
   }

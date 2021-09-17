@@ -69,6 +69,7 @@ Full contributing guidelines are covered [here](CONTRIBUTING.md).
 | project\_id | The GCP Project ID | `any` | `null` | no |
 | region | The GCP Project Region | `any` | `null` | no |
 | remote\_user | The user to operate as on the VM. SSH Key is generated for this user | `string` | `"ubuntu"` | no |
+| route\_only\_private\_ips | Routes only private IPs through the VPN (10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16) | `bool` | `false` | no |
 | service\_account | Service account to attach to the instance. See https://www.terraform.io/docs/providers/google/r/compute_instance_template.html#service_account. | <pre>object({<br>    email  = string,<br>    scopes = set(string)<br>  })</pre> | <pre>{<br>  "email": null,<br>  "scopes": []<br>}</pre> | no |
 | source\_image | The source image for the image family. If not specified, terraform will try to create a new instance template anytime an update for an image familty is release | `string` | `"ubuntu-2004-focal-v20210415"` | no |
 | source\_image\_family | n/a | `string` | `"ubuntu-2004-lts"` | no |

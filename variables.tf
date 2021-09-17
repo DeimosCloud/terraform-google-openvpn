@@ -100,3 +100,8 @@ variable "machine_type" {
   description = "Machine type to create, e.g. n1-standard-1"
   default     = "n1-standard-1"
 }
+
+variable "route_only_private_ips" {
+  description = "Routes only private IPs through the VPN (10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16)"
+  default     = false
+}
