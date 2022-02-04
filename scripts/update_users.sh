@@ -47,18 +47,13 @@ fi
 # Declare all additional parameters to be user names
 USERNAMES="$@"
 
-
 # Create a list of provisioned OVPN users from existing *.ovpn files
-declare -a ovpn_users
-for ovpn_filename in *.ovpn
-do
-  ovpn_users=("${ovpn_users[@]}" "${ovpn_filename%.*}")
-done
+ovpn_users=( $(tail -n +2 /etc/openvpn/easy-rsa/pki/index.txt | grep "^V" | cut -d '=' -f 2 | tr '\n' ' ') )
 
 # Revoke excess client certificates
 for ovpn_user in ${ovpn_users[@]}
 do
-  if is_in_array "${ovpn_user}" "${USERNAMES}"
+  if $USERNAMES =~ $ovpn_user
   then
     echo "Keeping certificate for user ${ovpn_user}."
   else
@@ -73,7 +68,6 @@ do
     ./openvpn-install.sh
   fi
 done
-
 
 client_template="/etc/openvpn/client-template.txt"
 echo "\n\nRoute private IPs $ROUTE_ONLY_PRIVATE_IPS\n\n"
