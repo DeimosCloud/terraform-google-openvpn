@@ -10,19 +10,6 @@
 # Set the nullglob option so that the array is empty if there are no matches; see also <https://stackoverflow.com/a/10981499> for details
 shopt -s nullglob
 
-# A pint for the person who can do this in one line using readily available Bash primitives!
-function is_in_array {
-  array=$2
-  for i in ${array[@]}
-  do
-    if [[ "${i}" == "$1" ]]
-    then
-      return 0
-    fi
-  done
-  return 1
-}
-
 # Input paramter checking and alerting if there are none (which is synonymous with revoking all client certificates)
 if [[ "$#" -eq "0" ]]
 then
