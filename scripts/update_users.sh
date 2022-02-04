@@ -40,7 +40,7 @@ ovpn_users=( $(tail -n +2 /etc/openvpn/easy-rsa/pki/index.txt | grep "^V" | cut 
 # Revoke excess client certificates
 for ovpn_user in ${ovpn_users[@]}
 do
-  if $USERNAMES =~ $ovpn_user
+  if [[ "$USERNAMES" =~ "$ovpn_user" ]];
   then
     echo "Keeping certificate for user ${ovpn_user}."
   else
