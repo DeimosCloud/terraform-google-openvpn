@@ -72,7 +72,7 @@ module "instance_template" {
 
 
   startup_script = <<SCRIPT
-    curl -O https://raw.githubusercontent.com/angristan/openvpn-install/openvpn-install.sh
+    curl -O https://raw.githubusercontent.com/angristan/openvpn-install/master/openvpn-install.sh
     chmod +x openvpn-install.sh
     mv openvpn-install.sh /home/${var.remote_user}/
     export AUTO_INSTALL=y
