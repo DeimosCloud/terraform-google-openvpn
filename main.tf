@@ -70,7 +70,6 @@ module "instance_template" {
   source_image_family  = var.source_image_family
   disk_size_gb         = var.disk_size_gb
 
-
   startup_script = <<SCRIPT
     curl -O https://raw.githubusercontent.com/angristan/openvpn-install/master/openvpn-install.sh
     chmod +x openvpn-install.sh
