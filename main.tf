@@ -86,6 +86,7 @@ module "instance_template" {
 }
 
 
+
 resource "google_compute_instance_from_template" "this" {
   name    = "${local.prefix}openvpn"
   project = var.project_id
