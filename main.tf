@@ -70,12 +70,9 @@ module "instance_template" {
   source_image_family  = var.source_image_family
   disk_size_gb         = var.disk_size_gb
 
-  # The initial install will still use the file from the public remote repository due to the fact
-  # that you are not able to use the local Terraform file from the module in the bash install script
-  # however the file will be updated to use the local one from the resource below which will replace
-  # the script when the file changes using the resource null_resource.openvpn_install_script
+
   startup_script = <<SCRIPT
-    curl -O https://raw.githubusercontent.com/angristan/openvpn-install/master/openvpn-install.sh
+    curl -O https://raw.githubusercontent.com/angristan/openvpn-install/openvpn-install.sh
     chmod +x openvpn-install.sh
     mv openvpn-install.sh /home/${var.remote_user}/
     export AUTO_INSTALL=y
@@ -108,8 +105,8 @@ resource "google_compute_instance_from_template" "this" {
 }
 
 resource "null_resource" "openvpn_install_script" {
-  triggers = {
-    policy_sha1 = sha1(file("${path.module}/scripts/openvpn-install.sh"))
+    triggers = {
+      policy_sha1 = sha1("https://raw.githubusercontent.com/angristan/openvpn-install/${var.openvpn_install_commit_sha}/openvpn-install.sh")
   }
 
   connection {
@@ -119,10 +116,12 @@ resource "null_resource" "openvpn_install_script" {
     private_key = tls_private_key.ssh-key.private_key_pem
   }
 
-  provisioner "file" {
-    source      = "${path.module}/scripts/openvpn-install.sh"
-    destination = "/home/${var.remote_user}/openvpn-install.sh"
-    when        = create
+  provisioner "remote-exec" {
+    inline = [
+      "cd /home/${var.remote_user}/ && curl -O https://raw.githubusercontent.com/angristan/openvpn-install/${var.openvpn_install_commit_sha}/openvpn-install.sh",
+      "chmod +x /home/${var.remote_user}/openvpn-install.sh"
+    ]
+    when = create
   }
 }
 
