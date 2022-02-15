@@ -70,6 +70,10 @@ module "instance_template" {
   source_image_family  = var.source_image_family
   disk_size_gb         = var.disk_size_gb
 
+  # The initial install will still use the file from the public remote repository due to the fact
+  # that you are not able to use the local Terraform file from the module in the bash install script
+  # however the file will be updated to use the local one from the resource below which will replace
+  # the script when the file changes using the resource null_resource.openvpn_install_script
   startup_script = <<SCRIPT
     curl -O https://raw.githubusercontent.com/angristan/openvpn-install/master/openvpn-install.sh
     chmod +x openvpn-install.sh
@@ -84,7 +88,6 @@ module "instance_template" {
   tags   = local.tags
   labels = var.labels
 }
-
 
 
 resource "google_compute_instance_from_template" "this" {
@@ -104,6 +107,24 @@ resource "google_compute_instance_from_template" "this" {
   source_instance_template = module.instance_template.self_link
 }
 
+resource "null_resource" "openvpn_install_script" {
+  triggers = {
+    policy_sha1 = sha1(file("${path.module}/scripts/openvpn-install.sh"))
+  }
+
+  connection {
+    type        = "ssh"
+    user        = var.remote_user
+    host        = google_compute_address.default.address
+    private_key = tls_private_key.ssh-key.private_key_pem
+  }
+
+  provisioner "file" {
+    source      = "${path.module}/scripts/openvpn-install.sh"
+    destination = "/home/${var.remote_user}/openvpn-install.sh"
+    when        = create
+  }
+}
 
 # Updates/creates the users VPN credentials on the VPN server
 resource "null_resource" "openvpn_update_users_script" {
