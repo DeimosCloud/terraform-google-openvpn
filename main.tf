@@ -104,9 +104,10 @@ resource "google_compute_instance_from_template" "this" {
   source_instance_template = module.instance_template.self_link
 }
 
+# Replaces the OpenVPN install script with one from the commit sha to easily replace the file for new changes as the update_users.sh script makes use of it
 resource "null_resource" "openvpn_install_script" {
     triggers = {
-      policy_sha1 = sha1("https://raw.githubusercontent.com/angristan/openvpn-install/${var.openvpn_install_commit_sha}/openvpn-install.sh")
+      policy_sha1 = sha1("https://raw.githubusercontent.com/angristan/openvpn-install/${var.install_script_commit_sha}/openvpn-install.sh")
   }
 
   connection {
@@ -118,7 +119,7 @@ resource "null_resource" "openvpn_install_script" {
 
   provisioner "remote-exec" {
     inline = [
-      "cd /home/${var.remote_user}/ && curl -O https://raw.githubusercontent.com/angristan/openvpn-install/${var.openvpn_install_commit_sha}/openvpn-install.sh",
+      "cd /home/${var.remote_user}/ && curl -O https://raw.githubusercontent.com/angristan/openvpn-install/${var.install_script_commit_sha}/openvpn-install.sh",
       "chmod +x /home/${var.remote_user}/openvpn-install.sh"
     ]
     when = create
