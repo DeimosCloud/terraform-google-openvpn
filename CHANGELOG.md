@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.3.0](https://github.com/DeimosCloud/terraform-google-openvpn/compare/v1.2.4...v1.3.0) (2022-02-18)
+
+
+### Features
+
+* Pin version for installation to allow updates ([#8](https://github.com/DeimosCloud/terraform-google-openvpn/issues/8)) ([41bba64](https://github.com/DeimosCloud/terraform-google-openvpn/commit/41bba64edc77a1af80e6ed412ea521d268aec713))
+
 ### [1.2.4](https://github.com/DeimosCloud/terraform-google-openvpn/compare/v1.2.3...v1.2.4) (2022-02-05)
 
 
