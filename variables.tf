@@ -105,3 +105,9 @@ variable "route_only_private_ips" {
   description = "Routes only private IPs through the VPN (10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16)"
   default     = false
 }
+
+variable "install_script_commit_sha" {
+  description = "The commit sha we are using in order to determine which version of the install file to use: https://raw.githubusercontent.com/angristan/openvpn-install/7d5c2d9/openvpn-install.sh"
+  type        = string
+  default     = "7d5c2d9"
+}
