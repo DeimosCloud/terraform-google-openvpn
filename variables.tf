@@ -26,25 +26,35 @@ variable "subnetwork" {
   default     = null
 }
 
-variable "source_image_project" {
-  type    = string
-  default = "ubuntu-os-cloud"
-}
+# variable "source_image_project" {
+#   type    = string
+#   default = "ubuntu-os-cloud"
+# }
 
-variable "source_image_family" {
+variable "image_family" {
   type    = string
   default = "ubuntu-2004-lts"
 }
 
-variable "source_image" {
-  description = "The source image for the image family. If not specified, terraform will try to create a new instance template anytime an update for an image familty is release"
-  type        = string
-  default     = "ubuntu-2004-focal-v20210415"
+# variable "source_image" {
+#   description = "The source image for the image family. If not specified, terraform will try to create a new instance template anytime an update for an image familty is release"
+#   type        = string
+#   default     = "ubuntu-2004-focal-v20210415"
+# }
+
+variable "disk_type" {
+  description = "(Optional) The GCE disk type. Can be either pd-ssd, local-ssd, pd-balanced or pd-standard"
+  default     = "pd-standard"
 }
 
 variable "disk_size_gb" {
   type    = string
   default = "30"
+}
+
+variable "auto_delete_disk" {
+  description = "Whether or not the boot disk should be auto-deleted"
+  default     = false
 }
 
 variable "service_account" {
@@ -58,7 +68,6 @@ variable "service_account" {
   })
   description = "Service account to attach to the instance. See https://www.terraform.io/docs/providers/google/r/compute_instance_template.html#service_account."
 }
-
 
 variable "metadata" {
   description = "Metadata, provided as a map"
@@ -103,5 +112,10 @@ variable "machine_type" {
 
 variable "route_only_private_ips" {
   description = "Routes only private IPs through the VPN (10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16)"
+  default     = false
+}
+
+variable "attach_public_ip" {
+  description = "Whether to make the instance public or not"
   default     = false
 }
