@@ -32,7 +32,7 @@ resource "google_compute_firewall" "allow-external-ssh" {
 }
 
 resource "google_compute_address" "default" {
-  name         = "global-openvpn-ip"
+  name         = "${local.prefix}global-openvpn-ip"
   region       = var.region
   network_tier = var.network_tier
 }
@@ -108,7 +108,7 @@ resource "google_compute_instance_template" "tpl" {
     subnetwork = var.subnetwork
 
     dynamic "access_config" {
-      for_each = var.attach_public_ip == false ? [] : local.access_config
+      for_each = local.access_config
 
       content {
         nat_ip       = access_config.value.nat_ip
@@ -124,39 +124,6 @@ resource "google_compute_instance_template" "tpl" {
   }
 }
 
-# module "instance_template" {
-#   source               = "terraform-google-modules/vm/google//modules/instance_template"
-#   version              = "~>7.0.0"
-#   region               = var.region
-#   name_prefix          = "${local.prefix}openvpn"
-#   project_id           = var.project_id
-#   network              = var.network
-#   subnetwork           = var.subnetwork
-#   metadata             = local.metadata
-#   machine_type         = var.machine_type
-#   service_account      = var.service_account
-#   source_image         = var.source_image
-#   source_image_project = var.source_image_project
-#   source_image_family  = var.source_image_family
-#   disk_size_gb         = var.disk_size_gb
-
-# startup_script = <<SCRIPT
-#   curl -O https://raw.githubusercontent.com/angristan/openvpn-install/master/openvpn-install.sh
-#   chmod +x openvpn-install.sh
-#   mv openvpn-install.sh /home/${var.remote_user}/
-#   export AUTO_INSTALL=y
-#   export PASS=1
-#   # Select Google DNS
-#   export DNS=9
-#   /home/${var.remote_user}/openvpn-install.sh
-# SCRIPT
-
-#   tags   = local.tags
-#   labels = var.labels
-# }
-
-
-
 resource "google_compute_instance_from_template" "this" {
   name    = "${local.prefix}openvpn"
   project = var.project_id
@@ -171,14 +138,12 @@ resource "google_compute_instance_from_template" "this" {
     }
   }
   source_instance_template = google_compute_instance_template.tpl.self_link
-
-  # source_instance_template = module.instance_template.self_link
 }
 
 # Replaces the OpenVPN install script with one from the commit sha to easily replace the file for new changes as the update_users.sh script makes use of it
 resource "null_resource" "openvpn_install_script" {
-    triggers = {
-      policy_sha1 = sha1("https://raw.githubusercontent.com/angristan/openvpn-install/${var.install_script_commit_sha}/openvpn-install.sh")
+  triggers = {
+    policy_sha1 = sha1("https://raw.githubusercontent.com/angristan/openvpn-install/${var.install_script_commit_sha}/openvpn-install.sh")
   }
 
   connection {

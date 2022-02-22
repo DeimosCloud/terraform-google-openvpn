@@ -26,21 +26,10 @@ variable "subnetwork" {
   default     = null
 }
 
-# variable "source_image_project" {
-#   type    = string
-#   default = "ubuntu-os-cloud"
-# }
-
 variable "image_family" {
   type    = string
   default = "ubuntu-2004-lts"
 }
-
-# variable "source_image" {
-#   description = "The source image for the image family. If not specified, terraform will try to create a new instance template anytime an update for an image familty is release"
-#   type        = string
-#   default     = "ubuntu-2004-focal-v20210415"
-# }
 
 variable "disk_type" {
   description = "(Optional) The GCE disk type. Can be either pd-ssd, local-ssd, pd-balanced or pd-standard"
