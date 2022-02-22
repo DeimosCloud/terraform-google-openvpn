@@ -120,9 +120,3 @@ variable "install_script_commit_sha" {
   type        = string
   default     = "7d5c2d9"
 }
-
-variable "install_script_commit_sha" {
-  description = "The commit sha we are using in order to determine which version of the install file to use: https://raw.githubusercontent.com/angristan/openvpn-install/7d5c2d9/openvpn-install.sh"
-  type        = string
-  default     = "7d5c2d9"
-}
