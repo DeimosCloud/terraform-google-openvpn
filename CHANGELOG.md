@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.0.0](https://github.com/DeimosCloud/terraform-google-openvpn/compare/v1.3.0...v2.0.0) (2022-02-22)
+
+
+### ⚠ BREAKING CHANGES
+
+* removes instance template module to allow working with lifecycles
+
+### Features
+
+* added persistent disk ([3974529](https://github.com/DeimosCloud/terraform-google-openvpn/commit/3974529c3baed6959fb7ff7b1b0ff79a1effd737))
+
 ## [1.3.0](https://github.com/DeimosCloud/terraform-google-openvpn/compare/v1.2.4...v1.3.0) (2022-02-18)
 
 
