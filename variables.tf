@@ -119,3 +119,9 @@ variable "attach_public_ip" {
   description = "Whether to make the instance public or not"
   default     = false
 }
+
+variable "install_script_commit_sha" {
+  description = "The commit sha we are using in order to determine which version of the install file to use: https://raw.githubusercontent.com/angristan/openvpn-install/7d5c2d9/openvpn-install.sh"
+  type        = string
+  default     = "7d5c2d9"
+}
