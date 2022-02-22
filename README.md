@@ -69,6 +69,7 @@ No modules.
 | <a name="input_disk_size_gb"></a> [disk\_size\_gb](#input\_disk\_size\_gb) | n/a | `string` | `"30"` | no |
 | <a name="input_disk_type"></a> [disk\_type](#input\_disk\_type) | (Optional) The GCE disk type. Can be either pd-ssd, local-ssd, pd-balanced or pd-standard | `string` | `"pd-standard"` | no |
 | <a name="input_image_family"></a> [image\_family](#input\_image\_family) | n/a | `string` | `"ubuntu-2004-lts"` | no |
+| <a name="input_install_script_commit_sha"></a> [install\_script\_commit\_sha](#input\_install\_script\_commit\_sha) | The commit sha we are using in order to determine which version of the install file to use: https://raw.githubusercontent.com/angristan/openvpn-install/7d5c2d9/openvpn-install.sh | `string` | `"7d5c2d9"` | no |
 | <a name="input_labels"></a> [labels](#input\_labels) | Labels, provided as a map | `map` | `{}` | no |
 | <a name="input_machine_type"></a> [machine\_type](#input\_machine\_type) | Machine type to create, e.g. n1-standard-1 | `string` | `"n1-standard-1"` | no |
 | <a name="input_metadata"></a> [metadata](#input\_metadata) | Metadata, provided as a map | `map` | `{}` | no |
