@@ -12,7 +12,10 @@ locals {
   # adding the null_resource to prevent evaluating this until the openvpn_update_users has executed
   refetch_user_ovpn = null_resource.openvpn_update_users_script.id != "" ? !alltrue([for x in var.users : fileexists("${var.output_dir}/${x}.ovpn")]) : false
   prefix            = var.prefix == "" ? "" : "${var.prefix}-"
-
+  access_config = [{
+    nat_ip       = google_compute_address.default.address
+    network_tier = var.network_tier
+  }]
 }
 
 resource "google_compute_firewall" "allow-external-ssh" {
@@ -29,7 +32,7 @@ resource "google_compute_firewall" "allow-external-ssh" {
 }
 
 resource "google_compute_address" "default" {
-  name         = "global-openvpn-ip"
+  name         = "${local.prefix}global-openvpn-ip"
   region       = var.region
   network_tier = var.network_tier
 }
@@ -54,23 +57,27 @@ resource "random_id" "password" {
   byte_length = "16"
 }
 
-module "instance_template" {
-  source               = "terraform-google-modules/vm/google//modules/instance_template"
-  version              = "~>7.0.0"
-  region               = var.region
-  name_prefix          = "${local.prefix}openvpn"
-  project_id           = var.project_id
-  network              = var.network
-  subnetwork           = var.subnetwork
-  metadata             = local.metadata
-  machine_type         = var.machine_type
-  service_account      = var.service_account
-  source_image         = var.source_image
-  source_image_project = var.source_image_project
-  source_image_family  = var.source_image_family
-  disk_size_gb         = var.disk_size_gb
+// Use a persistent disk so that it can be remounted on another instance.
+resource "google_compute_disk" "this" {
+  name  = "${local.prefix}-disk"
+  image = var.image_family
+  size  = var.disk_size_gb
+  type  = var.disk_type
+  zone  = var.zone
+}
 
-  startup_script = <<SCRIPT
+#-------------------
+# Instance Template
+#-------------------
+resource "google_compute_instance_template" "tpl" {
+  name_prefix  = "${local.prefix}-"
+  project      = var.project_id
+  machine_type = var.machine_type
+  labels       = var.labels
+  metadata     = var.metadata
+  region       = var.region
+
+  metadata_startup_script = <<SCRIPT
     curl -O https://raw.githubusercontent.com/angristan/openvpn-install/master/openvpn-install.sh
     chmod +x openvpn-install.sh
     mv openvpn-install.sh /home/${var.remote_user}/
@@ -81,11 +88,41 @@ module "instance_template" {
     /home/${var.remote_user}/openvpn-install.sh
   SCRIPT
 
-  tags   = local.tags
-  labels = var.labels
+  disk {
+    auto_delete = var.auto_delete_disk
+    boot        = true
+    source      = google_compute_disk.this.name
+  }
+
+  dynamic "service_account" {
+    for_each = [var.service_account]
+
+    content {
+      email  = lookup(service_account.value, "email", null)
+      scopes = lookup(service_account.value, "scopes", null)
+    }
+  }
+
+  network_interface {
+    network    = var.network
+    subnetwork = var.subnetwork
+
+    dynamic "access_config" {
+      for_each = local.access_config
+
+      content {
+        nat_ip       = access_config.value.nat_ip
+        network_tier = access_config.value.network_tier
+      }
+    }
+  }
+
+  tags = local.tags
+
+  lifecycle {
+    create_before_destroy = "true"
+  }
 }
-
-
 
 resource "google_compute_instance_from_template" "this" {
   name    = "${local.prefix}openvpn"
@@ -100,14 +137,13 @@ resource "google_compute_instance_from_template" "this" {
       network_tier = var.network_tier
     }
   }
-
-  source_instance_template = module.instance_template.self_link
+  source_instance_template = google_compute_instance_template.tpl.self_link
 }
 
 # Replaces the OpenVPN install script with one from the commit sha to easily replace the file for new changes as the update_users.sh script makes use of it
 resource "null_resource" "openvpn_install_script" {
-    triggers = {
-      policy_sha1 = sha1("https://raw.githubusercontent.com/angristan/openvpn-install/${var.install_script_commit_sha}/openvpn-install.sh")
+  triggers = {
+    policy_sha1 = sha1("https://raw.githubusercontent.com/angristan/openvpn-install/${var.install_script_commit_sha}/openvpn-install.sh")
   }
 
   connection {
