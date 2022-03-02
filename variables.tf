@@ -7,6 +7,11 @@ variable "project_id" {
   default     = null
 }
 
+variable "name" {
+  description = "The name of the VPN instance"
+  default = "openvpn"
+}
+
 variable "region" {
   description = "The GCP Project Region"
   default     = null
