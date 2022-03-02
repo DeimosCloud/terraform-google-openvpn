@@ -19,7 +19,7 @@ locals {
 }
 
 resource "google_compute_firewall" "allow-external-ssh" {
-  name    = "${local.prefix}openvpn-allow-external-ssh"
+  name    = "allow-external-ssh-${var.network}"
   network = var.network
 
   allow {
@@ -32,7 +32,7 @@ resource "google_compute_firewall" "allow-external-ssh" {
 }
 
 resource "google_compute_address" "default" {
-  name         = "${local.prefix}global-openvpn-ip"
+  name         = "global-openvpn-ip-${var.network}"
   region       = var.region
   network_tier = var.network_tier
 }
@@ -59,7 +59,7 @@ resource "random_id" "password" {
 
 // Use a persistent disk so that it can be remounted on another instance.
 resource "google_compute_disk" "this" {
-  name  = "${local.prefix}-disk"
+  name  = "${var.network}-disk"
   image = var.image_family
   size  = var.disk_size_gb
   type  = var.disk_type
@@ -70,7 +70,7 @@ resource "google_compute_disk" "this" {
 # Instance Template
 #-------------------
 resource "google_compute_instance_template" "tpl" {
-  name_prefix  = "${local.prefix}-"
+  name_prefix  = "${var.network}-"
   project      = var.project_id
   machine_type = var.machine_type
   labels       = var.labels
@@ -125,7 +125,7 @@ resource "google_compute_instance_template" "tpl" {
 }
 
 resource "google_compute_instance_from_template" "this" {
-  name    = "${local.prefix}openvpn"
+  name    = "openvpn-${var.network}"
   project = var.project_id
   zone    = var.zone
 
