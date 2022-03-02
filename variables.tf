@@ -8,8 +8,7 @@ variable "project_id" {
 }
 
 variable "name" {
-  description = "The name of the VPN instance"
-  default = "openvpn"
+  description = "Name to use when generating resources"
 }
 
 variable "region" {
