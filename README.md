@@ -7,6 +7,7 @@ A terraform module to setup OpenVPN on GCP.
 ```hcl
 module "openvpn" {
   source     = "../modules/terraform-openvpn-gcp"
+  name       = var.name
   region     = var.region
   project_id = var.project_id
   network    = module.vpc.network
@@ -34,7 +35,7 @@ Full contributing guidelines are covered [here](CONTRIBUTING.md).
 
 | Name | Version |
 |------|---------|
-| <a name="provider_google"></a> [google](#provider\_google) | 4.11.0 |
+| <a name="provider_google"></a> [google](#provider\_google) | 4.12.0 |
 | <a name="provider_local"></a> [local](#provider\_local) | 2.1.0 |
 | <a name="provider_null"></a> [null](#provider\_null) | 3.1.0 |
 | <a name="provider_random"></a> [random](#provider\_random) | 3.1.0 |
@@ -73,10 +74,10 @@ No modules.
 | <a name="input_labels"></a> [labels](#input\_labels) | Labels, provided as a map | `map` | `{}` | no |
 | <a name="input_machine_type"></a> [machine\_type](#input\_machine\_type) | Machine type to create, e.g. n1-standard-1 | `string` | `"n1-standard-1"` | no |
 | <a name="input_metadata"></a> [metadata](#input\_metadata) | Metadata, provided as a map | `map` | `{}` | no |
+| <a name="input_name"></a> [name](#input\_name) | The name to use when generating resources | `any` | n/a | yes |
 | <a name="input_network"></a> [network](#input\_network) | The name or self\_link of the network to attach this interface to. Use network attribute for Legacy or Auto subnetted networks and subnetwork for custom subnetted networks. | `string` | `"default"` | no |
 | <a name="input_network_tier"></a> [network\_tier](#input\_network\_tier) | Network network\_tier | `string` | `"STANDARD"` | no |
 | <a name="input_output_dir"></a> [output\_dir](#input\_output\_dir) | Folder to store all user openvpn details | `string` | `"openvpn"` | no |
-| <a name="input_prefix"></a> [prefix](#input\_prefix) | prefix to use for all resource | `string` | `""` | no |
 | <a name="input_project_id"></a> [project\_id](#input\_project\_id) | The GCP Project ID | `any` | `null` | no |
 | <a name="input_region"></a> [region](#input\_region) | The GCP Project Region | `any` | `null` | no |
 | <a name="input_remote_user"></a> [remote\_user](#input\_remote\_user) | The user to operate as on the VM. SSH Key is generated for this user | `string` | `"ubuntu"` | no |

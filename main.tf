@@ -11,7 +11,7 @@ locals {
   private_key_file = "private-key.pem"
   # adding the null_resource to prevent evaluating this until the openvpn_update_users has executed
   refetch_user_ovpn = null_resource.openvpn_update_users_script.id != "" ? !alltrue([for x in var.users : fileexists("${var.output_dir}/${x}.ovpn")]) : false
-  prefix            = var.prefix == "" ? "" : "${var.prefix}-"
+  name              = var.name == "" ? "" : "${var.name}-"
   access_config = [{
     nat_ip       = google_compute_address.default.address
     network_tier = var.network_tier
@@ -19,7 +19,7 @@ locals {
 }
 
 resource "google_compute_firewall" "allow-external-ssh" {
-  name    = "allow-external-ssh-${var.network}"
+  name    = "openvpn-${var.name}-allow-external-ssh"
   network = var.network
 
   allow {
@@ -32,7 +32,7 @@ resource "google_compute_firewall" "allow-external-ssh" {
 }
 
 resource "google_compute_address" "default" {
-  name         = "global-openvpn-ip-${var.network}"
+  name         = "openvpn-${var.name}-global-ip"
   region       = var.region
   network_tier = var.network_tier
 }
@@ -59,7 +59,7 @@ resource "random_id" "password" {
 
 // Use a persistent disk so that it can be remounted on another instance.
 resource "google_compute_disk" "this" {
-  name  = "${var.network}-disk"
+  name  = "openvpn-${var.name}-disk"
   image = var.image_family
   size  = var.disk_size_gb
   type  = var.disk_type
@@ -70,7 +70,7 @@ resource "google_compute_disk" "this" {
 # Instance Template
 #-------------------
 resource "google_compute_instance_template" "tpl" {
-  name_prefix  = "${var.network}-"
+  name_prefix  = "openvpn-${var.name}-"
   project      = var.project_id
   machine_type = var.machine_type
   labels       = var.labels
@@ -125,7 +125,7 @@ resource "google_compute_instance_template" "tpl" {
 }
 
 resource "google_compute_instance_from_template" "this" {
-  name    = "openvpn-${var.network}"
+  name    = "openvpn-${var.name}"
   project = var.project_id
   zone    = var.zone
 
