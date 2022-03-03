@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.1.0](https://github.com/DeimosCloud/terraform-google-openvpn/compare/v2.0.0...v2.1.0) (2022-03-03)
+
+
+### Features
+
+* use name var instead of prefix ([#12](https://github.com/DeimosCloud/terraform-google-openvpn/issues/12)) ([7753497](https://github.com/DeimosCloud/terraform-google-openvpn/commit/7753497bf22a3b71535e9cac6f38eb6dfa7c23a6))
+
 ## [2.0.0](https://github.com/DeimosCloud/terraform-google-openvpn/compare/v1.3.0...v2.0.0) (2022-02-22)
 
 
