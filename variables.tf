@@ -4,6 +4,7 @@ variable "project_id" {
 }
 
 variable "name" {
+  type        = string
   description = "The name to use when generating resources"
 }
 

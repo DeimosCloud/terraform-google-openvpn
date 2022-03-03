@@ -74,7 +74,7 @@ No modules.
 | <a name="input_labels"></a> [labels](#input\_labels) | Labels, provided as a map | `map` | `{}` | no |
 | <a name="input_machine_type"></a> [machine\_type](#input\_machine\_type) | Machine type to create, e.g. n1-standard-1 | `string` | `"n1-standard-1"` | no |
 | <a name="input_metadata"></a> [metadata](#input\_metadata) | Metadata, provided as a map | `map` | `{}` | no |
-| <a name="input_name"></a> [name](#input\_name) | The name to use when generating resources | `any` | n/a | yes |
+| <a name="input_name"></a> [name](#input\_name) | The name to use when generating resources | `string` | n/a | yes |
 | <a name="input_network"></a> [network](#input\_network) | The name or self\_link of the network to attach this interface to. Use network attribute for Legacy or Auto subnetted networks and subnetwork for custom subnetted networks. | `string` | `"default"` | no |
 | <a name="input_network_tier"></a> [network\_tier](#input\_network\_tier) | Network network\_tier | `string` | `"STANDARD"` | no |
 | <a name="input_output_dir"></a> [output\_dir](#input\_output\_dir) | Folder to store all user openvpn details | `string` | `"openvpn"` | no |
