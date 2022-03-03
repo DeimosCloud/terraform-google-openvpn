@@ -4,7 +4,7 @@ variable "project_id" {
 }
 
 variable "name" {
-  description = "Name to use when generating resources"
+  description = "The name to use when generating resources"
 }
 
 variable "region" {
