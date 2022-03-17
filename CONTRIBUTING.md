@@ -32,7 +32,7 @@ $ git commit -m "<MESSAGE>" # calls pre-commit hooks before commiting changes
 
 ## Semantic Pull Requests
 
-To generate changelog, Pull Requests or Commits must have sementic and must follow conventional specs below:
+To generate changelog, Pull Requests or Commits must have semantic and must follow conventional specs below:
 
 - `feat:` for new features
 - `fix:` for bug fixes
