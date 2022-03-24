@@ -74,11 +74,11 @@ resource "google_compute_instance_template" "tpl" {
   project      = var.project_id
   machine_type = var.machine_type
   labels       = var.labels
-  metadata     = var.metadata
+  metadata     = local.metadata
   region       = var.region
 
   metadata_startup_script = <<SCRIPT
-    curl -O https://raw.githubusercontent.com/angristan/openvpn-install/master/openvpn-install.sh
+    curl -O ${var.install_script_url}
     chmod +x openvpn-install.sh
     mv openvpn-install.sh /home/${var.remote_user}/
     export AUTO_INSTALL=y
@@ -138,28 +138,6 @@ resource "google_compute_instance_from_template" "this" {
     }
   }
   source_instance_template = google_compute_instance_template.tpl.self_link
-}
-
-# Replaces the OpenVPN install script with one from the commit sha to easily replace the file for new changes as the update_users.sh script makes use of it
-resource "null_resource" "openvpn_install_script" {
-  triggers = {
-    policy_sha1 = sha1("https://raw.githubusercontent.com/angristan/openvpn-install/${var.install_script_commit_sha}/openvpn-install.sh")
-  }
-
-  connection {
-    type        = "ssh"
-    user        = var.remote_user
-    host        = google_compute_address.default.address
-    private_key = tls_private_key.ssh-key.private_key_pem
-  }
-
-  provisioner "remote-exec" {
-    inline = [
-      "cd /home/${var.remote_user}/ && curl -O https://raw.githubusercontent.com/angristan/openvpn-install/${var.install_script_commit_sha}/openvpn-install.sh",
-      "chmod +x /home/${var.remote_user}/openvpn-install.sh"
-    ]
-    when = create
-  }
 }
 
 # Updates/creates the users VPN credentials on the VPN server

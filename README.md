@@ -6,7 +6,8 @@ A terraform module to setup OpenVPN on GCP.
 
 ```hcl
 module "openvpn" {
-  source     = "../modules/terraform-openvpn-gcp"
+  source     = "DeimosCloud/openvpn/google"
+  version    = "~>2.1.1"
   name       = var.name
   region     = var.region
   project_id = var.project_id
@@ -35,10 +36,10 @@ Full contributing guidelines are covered [here](CONTRIBUTING.md).
 
 | Name | Version |
 |------|---------|
-| <a name="provider_google"></a> [google](#provider\_google) | 4.12.0 |
-| <a name="provider_local"></a> [local](#provider\_local) | 2.1.0 |
-| <a name="provider_null"></a> [null](#provider\_null) | 3.1.0 |
-| <a name="provider_random"></a> [random](#provider\_random) | 3.1.0 |
+| <a name="provider_google"></a> [google](#provider\_google) | 4.15.0 |
+| <a name="provider_local"></a> [local](#provider\_local) | 2.2.2 |
+| <a name="provider_null"></a> [null](#provider\_null) | 3.1.1 |
+| <a name="provider_random"></a> [random](#provider\_random) | 3.1.2 |
 | <a name="provider_tls"></a> [tls](#provider\_tls) | 3.1.0 |
 
 ## Modules
@@ -56,7 +57,6 @@ No modules.
 | [google_compute_instance_template.tpl](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/compute_instance_template) | resource |
 | [local_file.private_key](https://registry.terraform.io/providers/hashicorp/local/latest/docs/resources/file) | resource |
 | [null_resource.openvpn_download_configurations](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
-| [null_resource.openvpn_install_script](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
 | [null_resource.openvpn_update_users_script](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
 | [random_id.password](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/id) | resource |
 | [random_id.this](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/id) | resource |
@@ -70,7 +70,7 @@ No modules.
 | <a name="input_disk_size_gb"></a> [disk\_size\_gb](#input\_disk\_size\_gb) | n/a | `string` | `"30"` | no |
 | <a name="input_disk_type"></a> [disk\_type](#input\_disk\_type) | (Optional) The GCE disk type. Can be either pd-ssd, local-ssd, pd-balanced or pd-standard | `string` | `"pd-standard"` | no |
 | <a name="input_image_family"></a> [image\_family](#input\_image\_family) | n/a | `string` | `"ubuntu-2004-lts"` | no |
-| <a name="input_install_script_commit_sha"></a> [install\_script\_commit\_sha](#input\_install\_script\_commit\_sha) | The commit sha we are using in order to determine which version of the install file to use: https://raw.githubusercontent.com/angristan/openvpn-install/7d5c2d9/openvpn-install.sh | `string` | `"7d5c2d9"` | no |
+| <a name="input_install_script_url"></a> [install\_script\_url](#input\_install\_script\_url) | The commit sha we are using in order to determine which version of the install file to use: https://raw.githubusercontent.com/angristan/openvpn-install/master/openvpn-install.sh | `string` | `"https://raw.githubusercontent.com/angristan/openvpn-install/master/openvpn-install.sh"` | no |
 | <a name="input_labels"></a> [labels](#input\_labels) | Labels, provided as a map | `map` | `{}` | no |
 | <a name="input_machine_type"></a> [machine\_type](#input\_machine\_type) | Machine type to create, e.g. n1-standard-1 | `string` | `"n1-standard-1"` | no |
 | <a name="input_metadata"></a> [metadata](#input\_metadata) | Metadata, provided as a map | `map` | `{}` | no |
