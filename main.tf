@@ -43,10 +43,10 @@ resource "tls_private_key" "ssh-key" {
 
 
 // SSH Private Key
-resource "local_file" "private_key" {
-  sensitive_content = tls_private_key.ssh-key.private_key_pem
-  filename          = "${var.output_dir}/${local.private_key_file}"
-  file_permission   = "0400"
+resource "local_sensitive_file" "private_key" {
+  content         = tls_private_key.ssh-key.private_key_pem
+  filename        = "${var.output_dir}/${local.private_key_file}"
+  file_permission = "0400"
 }
 
 resource "random_id" "this" {
@@ -176,7 +176,7 @@ resource "null_resource" "openvpn_update_users_script" {
     when    = create
   }
 
-  depends_on = [google_compute_instance_from_template.this, local_file.private_key]
+  depends_on = [google_compute_instance_from_template.this, local_sensitive_file.private_key]
 }
 
 
