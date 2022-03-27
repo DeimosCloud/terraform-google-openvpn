@@ -81,7 +81,7 @@ resource "google_compute_instance_template" "tpl" {
     curl -O ${var.install_script_url}
     chmod +x openvpn-install.sh
     mv openvpn-install.sh /home/${var.remote_user}/
-    chown ${var.remote_user} /home/${var.remote_user}/openvpn-install.sh
+    chown ${var.remote_user}:${var.remote_user} /home/${var.remote_user}/openvpn-install.sh
     export AUTO_INSTALL=y
     export PASS=1
     # Select Google DNS
