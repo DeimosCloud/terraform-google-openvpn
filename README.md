@@ -36,7 +36,7 @@ Full contributing guidelines are covered [here](CONTRIBUTING.md).
 
 | Name | Version |
 |------|---------|
-| <a name="provider_google"></a> [google](#provider\_google) | 4.15.0 |
+| <a name="provider_google"></a> [google](#provider\_google) | 4.14.0 |
 | <a name="provider_local"></a> [local](#provider\_local) | 2.2.2 |
 | <a name="provider_null"></a> [null](#provider\_null) | 3.1.1 |
 | <a name="provider_random"></a> [random](#provider\_random) | 3.1.2 |
@@ -55,7 +55,7 @@ No modules.
 | [google_compute_firewall.allow-external-ssh](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/compute_firewall) | resource |
 | [google_compute_instance_from_template.this](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/compute_instance_from_template) | resource |
 | [google_compute_instance_template.tpl](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/compute_instance_template) | resource |
-| [local_file.private_key](https://registry.terraform.io/providers/hashicorp/local/latest/docs/resources/file) | resource |
+| [local_sensitive_file.private_key](https://registry.terraform.io/providers/hashicorp/local/latest/docs/resources/sensitive_file) | resource |
 | [null_resource.openvpn_download_configurations](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
 | [null_resource.openvpn_update_users_script](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
 | [random_id.password](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/id) | resource |

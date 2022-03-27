@@ -43,10 +43,10 @@ resource "tls_private_key" "ssh-key" {
 
 
 // SSH Private Key
-resource "local_file" "private_key" {
-  sensitive_content = tls_private_key.ssh-key.private_key_pem
-  filename          = "${var.output_dir}/${local.private_key_file}"
-  file_permission   = "0400"
+resource "local_sensitive_file" "private_key" {
+  content         = tls_private_key.ssh-key.private_key_pem
+  filename        = "${var.output_dir}/${local.private_key_file}"
+  file_permission = "0400"
 }
 
 resource "random_id" "this" {
@@ -81,6 +81,7 @@ resource "google_compute_instance_template" "tpl" {
     curl -O ${var.install_script_url}
     chmod +x openvpn-install.sh
     mv openvpn-install.sh /home/${var.remote_user}/
+    chown ${var.remote_user}:${var.remote_user} /home/${var.remote_user}/openvpn-install.sh
     export AUTO_INSTALL=y
     export PASS=1
     # Select Google DNS
@@ -176,7 +177,7 @@ resource "null_resource" "openvpn_update_users_script" {
     when    = create
   }
 
-  depends_on = [google_compute_instance_from_template.this, local_file.private_key]
+  depends_on = [google_compute_instance_from_template.this, local_sensitive_file.private_key]
 }
 
 
