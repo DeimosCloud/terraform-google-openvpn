@@ -116,7 +116,7 @@ variable "dns_servers" {
   default     = ["8.8.8.8", "8.8.4.4"]
   type        = list(string)
   validation {
-    condition     = length(var.dns_servers) < 1 || length(var.dns_servers) > 2
+    condition     = length(var.dns_servers) >= 1 || length(var.dns_servers) <= 2
     error_message = "The variable 'var.dns_servers' should be an array with 1 or 2 DNS entries only."
   }
 }
