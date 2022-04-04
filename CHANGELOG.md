@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.2.0](https://github.com/DeimosCloud/terraform-google-openvpn/compare/v2.1.1...v2.2.0) (2022-04-04)
+
+
+### Features
+
+* Add custom DNS Server configuration ([#16](https://github.com/DeimosCloud/terraform-google-openvpn/issues/16)) ([8dbb452](https://github.com/DeimosCloud/terraform-google-openvpn/commit/8dbb452975eb88e64cee00542b1dc1b9d51e54ae))
+
 ### [2.1.1](https://github.com/DeimosCloud/terraform-google-openvpn/compare/v2.1.0...v2.1.1) (2022-03-24)
 
 
