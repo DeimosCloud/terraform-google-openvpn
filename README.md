@@ -69,6 +69,7 @@ No modules.
 | <a name="input_auto_delete_disk"></a> [auto\_delete\_disk](#input\_auto\_delete\_disk) | Whether or not the boot disk should be auto-deleted | `bool` | `false` | no |
 | <a name="input_disk_size_gb"></a> [disk\_size\_gb](#input\_disk\_size\_gb) | n/a | `string` | `"30"` | no |
 | <a name="input_disk_type"></a> [disk\_type](#input\_disk\_type) | (Optional) The GCE disk type. Can be either pd-ssd, local-ssd, pd-balanced or pd-standard | `string` | `"pd-standard"` | no |
+| <a name="input_dns_servers"></a> [dns\_servers](#input\_dns\_servers) | The DNS servers to be configured | `list(string)` | <pre>[<br>  "8.8.8.8",<br>  "8.8.4.4"<br>]</pre> | no |
 | <a name="input_image_family"></a> [image\_family](#input\_image\_family) | n/a | `string` | `"ubuntu-2004-lts"` | no |
 | <a name="input_install_script_url"></a> [install\_script\_url](#input\_install\_script\_url) | The commit sha we are using in order to determine which version of the install file to use: https://raw.githubusercontent.com/angristan/openvpn-install/master/openvpn-install.sh | `string` | `"https://raw.githubusercontent.com/angristan/openvpn-install/master/openvpn-install.sh"` | no |
 | <a name="input_labels"></a> [labels](#input\_labels) | Labels, provided as a map | `map` | `{}` | no |

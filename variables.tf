@@ -110,3 +110,13 @@ variable "install_script_url" {
   type        = string
   default     = "https://raw.githubusercontent.com/angristan/openvpn-install/master/openvpn-install.sh"
 }
+
+variable "dns_servers" {
+  description = "The DNS servers to be configured"
+  default     = ["8.8.8.8", "8.8.4.4"]
+  type        = list(string)
+  validation {
+    condition     = length(var.dns_servers) < 1 || length(var.dns_servers) > 2
+    error_message = "The variable 'var.dns_servers' should be an array with 1 or 2 DNS entries only."
+  }
+}

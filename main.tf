@@ -84,8 +84,12 @@ resource "google_compute_instance_template" "tpl" {
     chown ${var.remote_user}:${var.remote_user} /home/${var.remote_user}/openvpn-install.sh
     export AUTO_INSTALL=y
     export PASS=1
-    # Select Google DNS
-    export DNS=9
+    # Using Custom DNS
+    export DNS=13
+    export $DNS1="${var.dns_servers[0]}"
+    %{if length(var.dns_servers) > 1}
+    export $DNS2="${var.dns_servers[1]}"
+    %{endif}
     /home/${var.remote_user}/openvpn-install.sh
   SCRIPT
 
