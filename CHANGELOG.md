@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+### [2.2.1](https://github.com/DeimosCloud/terraform-google-openvpn/compare/v2.2.0...v2.2.1) (2022-04-04)
+
+
+### Bug Fixes
+
+* correct export command in installation script [#17](https://github.com/DeimosCloud/terraform-google-openvpn/issues/17) ([fcbb027](https://github.com/DeimosCloud/terraform-google-openvpn/commit/fcbb0271c3ba1144f3822c9a6c3ae259b9e6848a))
+
 ## [2.2.0](https://github.com/DeimosCloud/terraform-google-openvpn/compare/v2.1.1...v2.2.0) (2022-04-04)
 
 
