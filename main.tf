@@ -6,6 +6,7 @@ locals {
     sshKeys = "${var.remote_user}:${tls_private_key.ssh-key.public_key_openssh}"
   })
   ssh_tag          = ["allow-ssh"]
+  udp_tag          = ["allow-udp"]
   tags             = toset(concat(var.tags, local.ssh_tag))
   output_folder    = var.output_dir
   private_key_file = "private-key.pem"
@@ -30,6 +31,25 @@ resource "google_compute_firewall" "allow-external-ssh" {
   source_ranges = ["0.0.0.0/0"]
   target_tags   = local.ssh_tag
 }
+
+resource "google_compute_firewall" "allow-openvpn-udp-port" {
+  name    = "openvpn-${var.name}-allow-udp"
+  network = var.network
+
+  allow {
+    protocol = "tcp"
+    ports    = ["1194"]
+  }
+
+  allow {
+    protocol = "udp"
+    ports    = ["1194"]
+  }
+
+  source_ranges = ["0.0.0.0/0"]
+  target_tags   = local.udp_tag
+}
+
 
 resource "google_compute_address" "default" {
   name         = "openvpn-${var.name}-global-ip"
