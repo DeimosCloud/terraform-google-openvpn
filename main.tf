@@ -7,7 +7,7 @@ locals {
   })
   ssh_tag          = ["allow-ssh"]
   udp_tag          = ["allow-udp"]
-  tags             = toset(concat(var.tags, local.ssh_tag))
+  tags             = toset(concat(var.tags, local.ssh_tag, local.udp_tag))
   output_folder    = var.output_dir
   private_key_file = "private-key.pem"
   # adding the null_resource to prevent evaluating this until the openvpn_update_users has executed
@@ -33,8 +33,9 @@ resource "google_compute_firewall" "allow-external-ssh" {
 }
 
 resource "google_compute_firewall" "allow-openvpn-udp-port" {
-  name    = "openvpn-${var.name}-allow-udp"
-  network = var.network
+  name        = "openvpn-${var.name}-allow"
+  network     = var.network
+  description = "Creates firewall rule targeting the openvpn instance"
 
   allow {
     protocol = "tcp"
