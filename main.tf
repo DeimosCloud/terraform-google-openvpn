@@ -5,9 +5,10 @@ locals {
   metadata = merge(var.metadata, {
     sshKeys = "${var.remote_user}:${tls_private_key.ssh-key.public_key_openssh}"
   })
-  ssh_tag          = ["allow-ssh"]
-  udp_tag          = ["allow-udp"]
-  tags             = toset(concat(var.tags, local.ssh_tag, local.udp_tag))
+  ssh_tag     = ["allow-ssh"]
+  openvpn_tag = ["openvpn-${var.name}"]
+  tags        = toset(concat(var.tags, local.ssh_tag, local.openvpn_tag))
+
   output_folder    = var.output_dir
   private_key_file = "private-key.pem"
   # adding the null_resource to prevent evaluating this until the openvpn_update_users has executed
@@ -48,7 +49,7 @@ resource "google_compute_firewall" "allow-openvpn-udp-port" {
   }
 
   source_ranges = ["0.0.0.0/0"]
-  target_tags   = local.udp_tag
+  target_tags   = local.openvpn_tag
 }
 
 
