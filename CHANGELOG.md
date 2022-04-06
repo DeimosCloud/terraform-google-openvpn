@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.3.0](https://github.com/DeimosCloud/terraform-google-openvpn/compare/v2.2.1...v2.3.0) (2022-04-06)
+
+
+### Features
+
+*  add openvpn firewall rule to allow 1194([#18](https://github.com/DeimosCloud/terraform-google-openvpn/issues/18)) ([2923d5f](https://github.com/DeimosCloud/terraform-google-openvpn/commit/2923d5f8ba065bf2123b2822c657444d9cbdca7b))
+
 ### [2.2.1](https://github.com/DeimosCloud/terraform-google-openvpn/compare/v2.2.0...v2.2.1) (2022-04-04)
 
 
