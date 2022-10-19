@@ -9,11 +9,10 @@ locals {
   openvpn_tag = ["openvpn-${var.name}"]
   tags        = toset(concat(var.tags, local.ssh_tag, local.openvpn_tag))
 
-  output_folder    = var.output_dir
   private_key_file = "private-key.pem"
   # adding the null_resource to prevent evaluating this until the openvpn_update_users has executed
   refetch_user_ovpn = null_resource.openvpn_update_users_script.id != "" ? !alltrue([for x in var.users : fileexists("${var.output_dir}/${x}.ovpn")]) : false
-  name              = var.name == "" ? "" : "${var.name}-"
+  host_project_id   = var.network_project_id != null ? var.network_project_id : var.project_id
   access_config = [{
     nat_ip       = google_compute_address.default.address
     network_tier = var.network_tier
@@ -21,20 +20,25 @@ locals {
 }
 
 resource "google_compute_firewall" "allow-external-ssh" {
-  name    = "openvpn-${var.name}-allow-external-ssh"
-  network = var.network
+  count = var.create_ssh_fw_rule ? 1 : 0
+
+  name        = "openvpn-${var.name}-allow-external-ssh"
+  project     = local.host_project_id
+  network     = var.network
+  description = "Allow port 22 on openvpn server"
 
   allow {
     protocol = "tcp"
     ports    = ["22"]
   }
 
-  source_ranges = ["0.0.0.0/0"]
+  source_ranges = var.ssh_source_ranges
   target_tags   = local.ssh_tag
 }
 
 resource "google_compute_firewall" "allow-openvpn-udp-port" {
   name        = "openvpn-${var.name}-allow"
+  project     = local.host_project_id
   network     = var.network
   description = "Creates firewall rule targeting the openvpn instance"
 
@@ -51,7 +55,6 @@ resource "google_compute_firewall" "allow-openvpn-udp-port" {
   source_ranges = ["0.0.0.0/0"]
   target_tags   = local.openvpn_tag
 }
-
 
 resource "google_compute_address" "default" {
   name         = "openvpn-${var.name}-global-ip"
@@ -80,6 +83,7 @@ resource "random_id" "password" {
 }
 
 // Use a persistent disk so that it can be remounted on another instance.
+#tfsec:ignore:google-compute-disk-encryption-customer-key
 resource "google_compute_disk" "this" {
   name  = "openvpn-${var.name}-disk"
   image = var.image_family
@@ -88,9 +92,6 @@ resource "google_compute_disk" "this" {
   zone  = var.zone
 }
 
-#-------------------
-# Instance Template
-#-------------------
 resource "google_compute_instance_template" "tpl" {
   name_prefix  = "openvpn-${var.name}-"
   project      = var.project_id
@@ -131,9 +132,8 @@ resource "google_compute_instance_template" "tpl" {
   }
 
   network_interface {
-    network    = var.network
-    subnetwork = var.subnetwork
-
+    subnetwork         = var.subnetwork
+    subnetwork_project = local.host_project_id
     dynamic "access_config" {
       for_each = local.access_config
 
@@ -157,8 +157,8 @@ resource "google_compute_instance_from_template" "this" {
   zone    = var.zone
 
   network_interface {
-    network    = var.network
-    subnetwork = var.subnetwork
+    subnetwork         = var.subnetwork
+    subnetwork_project = local.host_project_id
     access_config {
       nat_ip       = google_compute_address.default.address
       network_tier = var.network_tier
