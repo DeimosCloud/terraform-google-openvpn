@@ -82,7 +82,7 @@ variable "metadata" {
 variable "network_tier" {
   description = "Network network_tier"
   type        = string
-  default     = "PREMIUM"
+  default     = "STANDARD"
 }
 
 variable "labels" {

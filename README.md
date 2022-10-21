@@ -85,7 +85,7 @@ No modules.
 | <a name="input_name"></a> [name](#input\_name) | The name to use when generating resources | `string` | `""` | no |
 | <a name="input_network"></a> [network](#input\_network) | The name or self\_link of the network to attach this interface to. Use network attribute for Legacy or Auto subnetted networks and subnetwork for custom subnetted networks. | `string` | `"default"` | no |
 | <a name="input_network_project_id"></a> [network\_project\_id](#input\_network\_project\_id) | The GCP Host Project ID | `string` | `null` | no |
-| <a name="input_network_tier"></a> [network\_tier](#input\_network\_tier) | Network network\_tier | `string` | `"PREMIUM"` | no |
+| <a name="input_network_tier"></a> [network\_tier](#input\_network\_tier) | Network network\_tier | `string` | `"STANDARD"` | no |
 | <a name="input_output_dir"></a> [output\_dir](#input\_output\_dir) | Folder to store all user openvpn details | `string` | `"openvpn"` | no |
 | <a name="input_project_id"></a> [project\_id](#input\_project\_id) | The GCP Project ID | `string` | `null` | no |
 | <a name="input_region"></a> [region](#input\_region) | The GCP Project Region | `string` | `null` | no |
