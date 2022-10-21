@@ -72,7 +72,7 @@ No modules.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_auto_delete_disk"></a> [auto\_delete\_disk](#input\_auto\_delete\_disk) | Whether or not the boot disk should be auto-deleted | `string` | `false` | no |
+| <a name="input_auto_delete_disk"></a> [auto\_delete\_disk](#input\_auto\_delete\_disk) | Whether or not the boot disk should be auto-deleted | `bool` | `false` | no |
 | <a name="input_create_ssh_fw_rule"></a> [create\_ssh\_fw\_rule](#input\_create\_ssh\_fw\_rule) | Indicates whether to create SSH Firewall rule | `bool` | `false` | no |
 | <a name="input_disk_size_gb"></a> [disk\_size\_gb](#input\_disk\_size\_gb) | n/a | `string` | `"30"` | no |
 | <a name="input_disk_type"></a> [disk\_type](#input\_disk\_type) | (Optional) The GCE disk type. Can be either pd-ssd, local-ssd, pd-balanced or pd-standard | `string` | `"pd-standard"` | no |
@@ -90,7 +90,7 @@ No modules.
 | <a name="input_project_id"></a> [project\_id](#input\_project\_id) | The GCP Project ID | `string` | `null` | no |
 | <a name="input_region"></a> [region](#input\_region) | The GCP Project Region | `string` | `null` | no |
 | <a name="input_remote_user"></a> [remote\_user](#input\_remote\_user) | The user to operate as on the VM. SSH Key is generated for this user | `string` | `"ubuntu"` | no |
-| <a name="input_route_only_private_ips"></a> [route\_only\_private\_ips](#input\_route\_only\_private\_ips) | Routes only private IPs through the VPN (10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16) | `string` | `false` | no |
+| <a name="input_route_only_private_ips"></a> [route\_only\_private\_ips](#input\_route\_only\_private\_ips) | Routes only private IPs through the VPN (10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16) | `bool` | `false` | no |
 | <a name="input_service_account"></a> [service\_account](#input\_service\_account) | Service account to attach to the instance. See https://www.terraform.io/docs/providers/google/r/compute_instance_template.html#service_account. | <pre>object({<br>    email  = string,<br>    scopes = set(string)<br>  })</pre> | <pre>{<br>  "email": null,<br>  "scopes": []<br>}</pre> | no |
 | <a name="input_ssh_source_ranges"></a> [ssh\_source\_ranges](#input\_ssh\_source\_ranges) | SSH IP ranges allowed to ssh to openvpn server | `list(string)` | `[]` | no |
 | <a name="input_subnetwork"></a> [subnetwork](#input\_subnetwork) | The name of the subnetwork to attach this interface to. The subnetwork must exist in the same region this instance will be created in. Either network or subnetwork must be provided. | `string` | `null` | no |

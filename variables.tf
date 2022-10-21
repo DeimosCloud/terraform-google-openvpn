@@ -57,7 +57,7 @@ variable "disk_size_gb" {
 
 variable "auto_delete_disk" {
   description = "Whether or not the boot disk should be auto-deleted"
-  type        = string
+  type        = bool
   default     = false
 }
 
@@ -123,7 +123,7 @@ variable "machine_type" {
 
 variable "route_only_private_ips" {
   description = "Routes only private IPs through the VPN (10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16)"
-  type        = string
+  type        = bool
   default     = false
 }
 
