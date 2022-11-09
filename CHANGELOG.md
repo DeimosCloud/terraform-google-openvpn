@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.4.0](https://github.com/DeimosCloud/terraform-google-openvpn/compare/v2.3.0...v2.4.0) (2022-11-09)
+
+
+### Features
+
+* adding shared-vpc support ([#20](https://github.com/DeimosCloud/terraform-google-openvpn/issues/20)) ([f685ece](https://github.com/DeimosCloud/terraform-google-openvpn/commit/f685ecea568834e7ecaa590c45a63bd592b7638d))
+
 ## [2.3.0](https://github.com/DeimosCloud/terraform-google-openvpn/compare/v2.2.1...v2.3.0) (2022-04-06)
 
 
