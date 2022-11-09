@@ -143,7 +143,7 @@ variable "dns_servers" {
   }
 }
 
-variable "create_ssh_fw_rule" {
+variable "create_ssh_firewall_rule" {
   description = "Indicates whether to create SSH Firewall rule"
   type        = bool
   default     = false

@@ -31,11 +31,6 @@ Full contributing guidelines are covered [here](CONTRIBUTING.md).
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 0.14 |
-| <a name="requirement_google"></a> [google](#requirement\_google) | ~> 4.41.0 |
-| <a name="requirement_local"></a> [local](#requirement\_local) | ~> 2.2.3 |
-| <a name="requirement_null"></a> [null](#requirement\_null) | ~> 3.1.1 |
-| <a name="requirement_random"></a> [random](#requirement\_random) | ~> 3.4.3 |
-| <a name="requirement_tls"></a> [tls](#requirement\_tls) | ~> 4.0.3 |
 
 ## Providers
 
@@ -73,7 +68,7 @@ No modules.
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_auto_delete_disk"></a> [auto\_delete\_disk](#input\_auto\_delete\_disk) | Whether or not the boot disk should be auto-deleted | `bool` | `false` | no |
-| <a name="input_create_ssh_fw_rule"></a> [create\_ssh\_fw\_rule](#input\_create\_ssh\_fw\_rule) | Indicates whether to create SSH Firewall rule | `bool` | `false` | no |
+| <a name="input_create_ssh_firewall_rule"></a> [create\_ssh\_firewall\_rule](#input\_create\_ssh\_firewall\_rule) | Indicates whether to create SSH Firewall rule | `bool` | `false` | no |
 | <a name="input_disk_size_gb"></a> [disk\_size\_gb](#input\_disk\_size\_gb) | n/a | `string` | `"30"` | no |
 | <a name="input_disk_type"></a> [disk\_type](#input\_disk\_type) | (Optional) The GCE disk type. Can be either pd-ssd, local-ssd, pd-balanced or pd-standard | `string` | `"pd-standard"` | no |
 | <a name="input_dns_servers"></a> [dns\_servers](#input\_dns\_servers) | The DNS servers to be configured | `list(string)` | <pre>[<br>  "8.8.8.8",<br>  "8.8.4.4"<br>]</pre> | no |

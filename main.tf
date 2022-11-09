@@ -20,7 +20,7 @@ locals {
 }
 
 resource "google_compute_firewall" "allow-external-ssh" {
-  count = var.create_ssh_fw_rule ? 1 : 0
+  count = var.create_ssh_firewall_rule ? 1 : 0
 
   name        = "openvpn-${var.name}-allow-external-ssh"
   project     = local.host_project_id
