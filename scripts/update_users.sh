@@ -51,7 +51,7 @@ do
     export CLIENT="${ovpn_user}"
     export DNS="9"
     searchRegex="${ovpn_user}$"
-    export CLIENTNUMBER=$(echo $(tail -n +2 /etc/openvpn/easy-rsa/pki/index.txt | grep "^V" | cut -d '=' -f 2 | nl -s ') '|grep -n $searchRegex)|head -c 1)
+    export CLIENTNUMBER=$(echo $(tail -n +2 /etc/openvpn/easy-rsa/pki/index.txt | grep "^V" | cut -d '=' -f 2 | nl -s ') '|grep -n $searchRegex)| awk '{print $2}')
     ./openvpn-install.sh
   fi
 done

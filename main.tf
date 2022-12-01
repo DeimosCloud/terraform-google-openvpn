@@ -102,6 +102,7 @@ resource "google_compute_instance_template" "tpl" {
 
   metadata_startup_script = <<SCRIPT
     curl -O ${var.install_script_url}
+    sed -i.bak 's/ifconfig\.co/ifconfig\.me/g' openvpn-install.sh
     chmod +x openvpn-install.sh
     mv openvpn-install.sh /home/${var.remote_user}/
     chown ${var.remote_user}:${var.remote_user} /home/${var.remote_user}/openvpn-install.sh
