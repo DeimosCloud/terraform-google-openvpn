@@ -61,7 +61,7 @@ echo "\n\nRoute private IPs $ROUTE_ONLY_PRIVATE_IPS\n\n"
 if [[ "$ROUTE_ONLY_PRIVATE_IPS" = "true" ]]; then
   grep -qxF 'route-nopull' $client_template|| echo 'route-nopull' >> $client_template
   grep -qxF 'route 10.0.0.0 255.0.0.0 10.8.0.1' $client_template || echo 'route 10.0.0.0 255.0.0.0 10.8.0.1' >> $client_template
-  grep -qxF 'route 172.16.0.0 255.240.0.0 10.8.0.1' $client_template || echo 'route 172.16.0.0 255.255.0.0 10.8.0.1' >> $client_template
+  grep -qxF 'route 172.16.0.0 255.240.0.0 10.8.0.1' $client_template || echo 'route 172.16.0.0 255.240.0.0 10.8.0.1' >> $client_template
   grep -qxF 'route 192.168.0.0 255.255.0.0 10.8.0.1' $client_template || echo 'route 192.168.0.0 255.255.0.0 10.8.0.1' >> $client_template
 fi
 
